@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script lang="javascript" src="js/jquery-3.1.0.min.js"></script>
+	<script lang="javascript" src="js/d3.min.js"></script>
+	<style>
+		html, body {
+			padding: 0;
+			margin: 0;
+		}
+	</style>
+</head>
+<body>
+	
+	<script>
+		var dimension = 500;
+
+		var svg = d3.select('body').append('svg')
+			.attr('width', dimension)
+			.attr('height', dimension)
+			.style('background-color', 'white');
+
+		// YOUR CODE SHOULD START HERE
+		/*
+		 * Name: Justin Jo
+		 * Word: Accumulate
+		 */
+
+		var datalim = 1000;
+		var ptdata = [];
+		var tailData = [];
+		var srcRadius = 15;
+		var tailRadius = 10;
+
+
+		function tick(pt) {
+			// if (colordata.length == 0) { return; }
+			ptdata.push(pt);
+
+			for (var i = 0; i < tailData.length; i++) {
+				tailData[i].attr('cx', ptdata[ptdata.length - 5 * (i+1)][0])
+					.attr('cy', ptdata[ptdata.length - 5 * (i+1)][1]);
+			}
+
+			if (ptdata.length > datalim) { ptdata.shift(); }
+			if (ptdata.length % 15 == 0) { console.log(pt); } // debug
+		}
+
+		function addColor(fill) {
+			var new_circle = svg.append('circle')
+				.attr('class', 'tail')
+				.attr('cx', ptdata[ptdata.length - 10][0])
+				.attr('cy', ptdata[ptdata.length - 10][1])
+				.attr('r', tailRadius)
+				.attr('fill', fill);
+			tailData.push(new_circle);
+			if (tailRadius > 0 && tailData.length % 7 == 0) {
+				tailRadius--;
+			}
+		}
+
+		function genSource(fill, pt) {
+			var newSource = svg.append('circle')
+				.attr('class', 'source')
+				.attr('cx', pt[0])
+				.attr('cy', pt[1])
+				.attr('r', srcRadius)
+				.attr('fill', fill)
+				.on('mouseover', function() { 
+					addColor(newSource.attr('fill'));
+				});
+			return newSource;
+		}
+
+
+
+		svg.style('background-color', '#c7c7c7')
+		genSource('#ffa3a3', [dimension/4, dimension/4]);
+		genSource('#ffd5a9', [dimension/2, dimension/6]);
+		genSource('#fbffb6', [dimension*3/4, dimension/4]);
+		genSource('#bcffb6', [dimension*5/6, dimension/2]);
+		genSource('#a5e2a2', [dimension*3/4, dimension*3/4]);
+		genSource('#b4d7ff', [dimension/2, dimension*5/6]);
+		genSource('#b0a0e5', [dimension/4, dimension*3/4]);
+		genSource('#fcc3e3', [dimension/6, dimension/2]);
+		
+
+		var cursor = svg.append("circle")
+            .attr("id", "head")
+            .attr("pointer-events", "none")
+            .attr("r", 10)
+            .attr("fill", "#fff")
+            .attr("opacity", 0.5);
+
+        // var 
+
+        var new_svg = d3.select("body").select("svg")
+    		.on("mousemove", function() {
+    			var pt = d3.mouse(this);
+				cursor.attr('cx', pt[0]);
+				cursor.attr('cy', pt[1]);
+    			tick(pt);
+    		});
+    	var test = d3.select('body')
+    		.select('svg')
+    		.on('click', function() {
+    			tailRadius = 10;
+    			tailData = [];
+				svg.selectAll('.tail').remove();
+    		});
+		// console.log(d3.select("#hi").attr("r"));
+
+		// YOUR CODE SHOULD END HERE
+	</script>
+</body>
+</html>
