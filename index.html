@@ -48,7 +48,8 @@
             ptdata.push(pt);
 
             for (var i = 0; i < tailData.length; i++) {
-            	tailIndx[i] = Math.max(tailIndx[i], ptdata.length - 15 * (i+1));
+            	// tailIndx[i] = Math.max(tailIndx[i], ptdata.length - 15 * (i+1));
+            	tailIndx[i] = Math.max(tailIndx[i], ptdata.length - 5 * (i+1));
             	// tailIndx[i] = Math.min(tailIndx[i], ptdata.length - 5 * (i+1));
                 tailData[i].attr('cx', ptdata[tailIndx[i]][0])
                     .attr('cy', ptdata[tailIndx[i]][1]);
@@ -60,16 +61,17 @@
         }
 
         function addColor(fill) {
-        	var index;
-        	if (tailIndx.length == 0) {
-        		if (ptdata.length < 20) {
-        			index = ptdata.length - 1;
-        		} else {
-        			index = ptdata.length - 20;
-        		}
-        	} else {
-        		index = tailIndx[tailIndx.length - 1];
-        	}
+        	// var index;
+        	// if (tailIndx.length == 0) {
+        	// 	if (ptdata.length < 20) {
+        	// 		index = ptdata.length - 1;
+        	// 	} else {
+        	// 		index = ptdata.length - 20;
+        	// 	}
+        	// } else {
+        	// 	index = tailIndx[tailIndx.length - 1];
+        	// }
+        	var index = ptdata.length - 10;
             var new_circle = svg.append('circle')
                 .attr('class', 'tail')
                 .attr('cx', ptdata[index][0])
@@ -129,8 +131,8 @@
 			if (sleep > 1) {
 				for (var i = 0; i < tailData.length; i++) {
 					if (i == 0) {
-						if (tailIndx[i] < ptdata.length - 5) {
-						// if (tailIndx[i] < ptdata.length - 1) {
+						// if (tailIndx[i] < ptdata.length - 5) {
+						if (tailIndx[i] < ptdata.length - 1) {
 							tailIndx[i]++;
 						}
 					} else {
@@ -150,4 +152,4 @@
         // YOUR CODE SHOULD END HERE
     </script>
 </body>
-</html>
+<!-- </html> -->
