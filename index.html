@@ -37,7 +37,7 @@
         var cursor = svg.append("circle")
             .attr("id", "head")
             .attr("pointer-events", "none")
-            .attr("r", 10)
+            .attr("r", tailRadius)
             .attr("fill", "#fff")
             .attr("opacity", 0.5);
 
@@ -112,7 +112,7 @@
         var test = d3.select('body')
             .select('svg')
             .on('click', function() {
-                tailRadius = 10;
+                tailRadius = tailRadius;
                 tailData = [];
                 svg.selectAll('.tail').remove();
             });
