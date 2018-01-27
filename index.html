@@ -48,7 +48,7 @@
             ptdata.push(pt);
 
             for (var i = 0; i < tailData.length; i++) {
-            	tailIndx[i] = Math.max(tailIndx[i], ptdata.length - 5 * (i+1));
+            	tailIndx[i] = Math.max(tailIndx[i], ptdata.length - 15 * (i+1));
             	// tailIndx[i] = Math.min(tailIndx[i], ptdata.length - 5 * (i+1));
                 tailData[i].attr('cx', ptdata[tailIndx[i]][0])
                     .attr('cy', ptdata[tailIndx[i]][1]);
@@ -60,14 +60,24 @@
         }
 
         function addColor(fill) {
+        	var index;
+        	if (tailIndx.length == 0) {
+        		if (ptdata.length < 20) {
+        			index = ptdata.length - 1;
+        		} else {
+        			index = ptdata.length - 20;
+        		}
+        	} else {
+        		index = tailIndx[tailIndx.length - 1];
+        	}
             var new_circle = svg.append('circle')
                 .attr('class', 'tail')
-                .attr('cx', ptdata[ptdata.length - 10][0])
-                .attr('cy', ptdata[ptdata.length - 10][1])
+                .attr('cx', ptdata[index][0])
+                .attr('cy', ptdata[index][1])
                 .attr('r', tailRadius)
                 .attr('fill', fill);
             tailData.push(new_circle);
-            tailIndx.push(ptdata.length - 10);
+            tailIndx.push(index);
             if (tailRadius > 0 && tailData.length % 7 == 0) {
                 tailRadius--;
             }
@@ -85,10 +95,8 @@
                 });
             return newSource;
         }
-        
 
-
-        svg.style('background-color', '#c7c7c7')
+        svg.style('background-color', '#c7c7c7');
         genSource('#ffa3a3', [dimension/4, dimension/4]);
         genSource('#ffd5a9', [dimension/2, dimension/6]);
         genSource('#fbffb6', [dimension*3/4, dimension/4]);
@@ -97,7 +105,7 @@
         genSource('#b4d7ff', [dimension/2, dimension*5/6]);
         genSource('#b0a0e5', [dimension/4, dimension*3/4]);
         genSource('#fcc3e3', [dimension/6, dimension/2]);
-        
+
         // mouse movement
         d3.select("body").select("svg")
             .on("mousemove", function() {
@@ -121,22 +129,23 @@
 			if (sleep > 1) {
 				for (var i = 0; i < tailData.length; i++) {
 					if (i == 0) {
-						if (tailIndx[i] < ptdata.length - 1) {
+						if (tailIndx[i] < ptdata.length - 5) {
+						// if (tailIndx[i] < ptdata.length - 1) {
 							tailIndx[i]++;
 						}
 					} else {
 						if (tailIndx[i] < tailIndx[i-1] - 1) {
+						// if (tailIndx[i] < tailIndx[i-1] - 5) {
 							tailIndx[i]++;
 						} else {
 							tailIndx[i] = tailIndx[i-1] - 1;
+							// tailIndx[i] = tailIndx[i-1] - 5;
 						}
 					}
-
 	                tailData[i].attr('cx', ptdata[tailIndx[i]][0])
 	                    .attr('cy', ptdata[tailIndx[i]][1]);
 	            }
 			}
-			// console.log(sleep);
 		});
         // YOUR CODE SHOULD END HERE
     </script>
