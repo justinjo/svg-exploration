@@ -112,7 +112,7 @@
         var test = d3.select('body')
             .select('svg')
             .on('click', function() {
-                tailRadius = tailRadius;
+            	tailRadius = dimension/32;
                 tailData = [];
                 svg.selectAll('.tail').remove();
             });
@@ -132,7 +132,7 @@
 							tailIndx[i] = tailIndx[i-1] - 1;
 						}
 					}
-					
+
 	                tailData[i].attr('cx', ptdata[tailIndx[i]][0])
 	                    .attr('cy', ptdata[tailIndx[i]][1]);
 	            }
