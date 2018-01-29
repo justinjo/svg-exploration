@@ -30,9 +30,7 @@
         var cursorPath = [[0,0]];
         var tailElem = [];
         var tailIndex = [];
-        // var srcRadius = dimension/28;
-        // var tailRadius = dimension/32;
-        var srcRadius = dimension/24;
+        var srcRadius = dimension/28;
         var tailRadius = dimension/32;
         var sleep = 0;
 
@@ -47,7 +45,7 @@
             sleep = 0; // reset sleep counter
             cursorPath.push(pt);
 
-               // update the location of each circle, keep them staggered
+            // update the location of each circle, keep them staggered
             for (var i = 0; i < tailElem.length; i++) {
                 tailIndex[i] = Math.max(tailIndex[i], cursorPath.length - 5 * (i+1));
                 updatePos(tailElem[i], cursorPath[tailIndex[i]]);
@@ -58,6 +56,7 @@
             }
         }
 
+        // add a circle to the tail
         function addColor(fill) {
             var index;
             if (tailIndex.length == 0) {
@@ -115,22 +114,19 @@
         genSource('#fcc3e3', [dimension/6, dimension/2]);
 
         // mouse movement
-        d3.select("body").select("svg")
-            .on("mousemove", function() {
-                var pt = d3.mouse(this);
-                updatePos(cursor, pt);
-                tick(pt);
-            });
+        d3.select('body').select('svg').on('mousemove', function() {
+            var pt = d3.mouse(this);
+            updatePos(cursor, pt);
+            tick(pt);
+        });
 
         // click to reset
-        d3.select('body')
-            .select('svg')
-            .on('click', function() {
-                tailRadius = dimension/32;
-                tailElem = [];
-                tailIndex = [];
-                svg.selectAll('.tail').remove();
-            });
+        d3.select('body').select('svg').on('click', function() {
+            tailRadius = dimension/32;
+            tailElem = [];
+            tailIndex = [];
+            svg.selectAll('.tail').remove();
+        });
 
         // slinky if mouse is still
         d3.timer(function(t) {
@@ -140,13 +136,11 @@
             }
             for (var i = 0; i < tailElem.length; i++) {
                 if (i == 0) {
-                    if (tailIndex[0] < cursorPath.length - 15) {
-                        tailIndex[0]++;
+                    if (tailIndex[i] < cursorPath.length - 15) {
+                        tailIndex[i]++;
                     }
                 } else if (tailIndex[i] < tailIndex[i-1] - 1) {
                     tailIndex[i]++;
-                } else {
-                    tailIndex[i] = tailIndex[i-1] - 1;
                 }
                 updatePos(tailElem[i], cursorPath[tailIndex[i]]);
             }
