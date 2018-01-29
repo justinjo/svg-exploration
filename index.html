@@ -68,6 +68,7 @@
             } else {
                 index = tailIndex[tailIndex.length - 1] - 1;
             }
+            
             var new_circle = svg.append('circle')
                 .attr('class', 'tail')
                 .attr('cx', cursorPath[index][0])
@@ -77,6 +78,8 @@
                 .attr('fill', fill);
             tailElem.push(new_circle);
             tailIndex.push(index);
+
+            // make the tail gradually shrink
             if (tailRadius > 1 && tailElem.length % 7 == 0) {
                 tailRadius--;
             } else if (tailRadius > 0 && tailRadius < 1) {
